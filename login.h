@@ -1,9 +1,6 @@
-//If Login.h is not defined, define it and include the following code
-#ifndef LOGIN_H
-#define LOGIN_H
-
-#define MAX_USERS 100
-#define USERS_FILE "users.txt"
+#include <stdio.h>
+#include <string.h>
+#include "structs.h"
 
 struct user{
     char userID[10];
@@ -13,7 +10,4 @@ struct user{
 };
 
 int loadUsers(struct user users[], int maxUsers); 
-
 struct user *authenticate(struct user users[], int count, const char *username, const char *password);
-
-#endif
