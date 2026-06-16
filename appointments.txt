@@ -1,0 +1,133 @@
+/* auth.c - Login, Logout, and Password Functions
+   Author: Nur Aisyah Binti Roslan
+   Description: This file handles user login and logout.
+   I also added a change password function here because it makes sense.
+   
+   Assumptions:
+   - User ID and password are case sensitive
+   - Password must be at least 6 characters
+   - System has one hardcoded director account for initial setup
+*/
+ 
+#include "../headers/hms.h"
+ 
+/* Login function - returns pointer to the user if success, NULL if fail */
+User* login() {
+    char inputID[MAX_ID];
+    char inputPass[MAX_PASS];
+    int attempts = 0;
+    int maxAttempts = 3;
+ 
+    clearScreen();
+    printHeader("   HOSPITAL MANAGEMENT SYSTEM");
+    printf("\n");
+ 
+    while (attempts < maxAttempts) {
+        printf("  User ID  : ");
+        fgets(inputID, MAX_ID, stdin);
+        inputID[strcspn(inputID, "\n")] = '\0';
+ 
+        printf("  Password : ");
+        fgets(inputPass, MAX_PASS, stdin);
+        inputPass[strcspn(inputPass, "\n")] = '\0';
+ 
+        /* Search through users array */
+        int i;
+        for (i = 0; i < userCount; i++) {
+            if (strcmp(users[i].userID, inputID) == 0 &&
+                strcmp(users[i].password, inputPass) == 0 &&
+                users[i].isActive == 1)
+            {
+                printf("\n  Login successful! Welcome, %s.\n\n", users[i].name);
+                pressEnter();
+                return &users[i];
+            }
+        }
+ 
+        /* Also check hardcoded director account
+           I added this so we have an account to start with */
+        if (strcmp(inputID, "DIR001") == 0 && strcmp(inputPass, "director123") == 0) {
+            /* find if director exists in array already */
+            for (i = 0; i < userCount; i++) {
+                if (strcmp(users[i].userID, "DIR001") == 0) {
+                    printf("\n  Login successful! Welcome, %s.\n\n", users[i].name);
+                    pressEnter();
+                    return &users[i];
+                }
+            }
+            /* if not found, create a temporary one */
+            static User directorTemp;
+            memset(&directorTemp, 0, sizeof(User));
+            strncpy(directorTemp.userID, "DIR001", MAX_ID-1);
+            strncpy(directorTemp.name, "Director", MAX_NAME-1);
+            strncpy(directorTemp.password, "director123", MAX_PASS-1);
+            directorTemp.role = ROLE_DIRECTOR;
+            strncpy(directorTemp.phone, "0123456789", MAX_PHONE-1);
+            directorTemp.isActive = 1;
+            printf("\n  Login successful! Welcome, Director.\n\n");
+            pressEnter();
+            return &directorTemp;
+        }
+ 
+        attempts++;
+        printf("\n  [!] Invalid ID or password. Attempts left: %d\n\n", maxAttempts - attempts);
+    }
+ 
+    printf("  [!] Too many failed attempts. Access denied.\n");
+    pressEnter();
+    return NULL;
+}
+ 
+/* Logout - just sets currentUser to NULL */
+void logout() {
+    printf("\n  Logging out... Goodbye, %s!\n", currentUser->name);
+    currentUser = NULL;
+    pressEnter();
+}
+ 
+/* Change password function
+   Returns 1 if successful, 0 if failed */
+int changePassword(User *u) {
+    char oldPass[MAX_PASS];
+    char newPass[MAX_PASS];
+    char confirmPass[MAX_PASS];
+ 
+    clearScreen();
+    printHeader("Change Password");
+ 
+    printf("  Enter current password : ");
+    fgets(oldPass, MAX_PASS, stdin);
+    oldPass[strcspn(oldPass, "\n")] = '\0';
+ 
+    if (strcmp(oldPass, u->password) != 0) {
+        printf("\n  [!] Current password is incorrect.\n");
+        pressEnter();
+        return 0;
+    }
+ 
+    printf("  Enter new password     : ");
+    fgets(newPass, MAX_PASS, stdin);
+    newPass[strcspn(newPass, "\n")] = '\0';
+ 
+    if (strlen(newPass) < 6) {
+        printf("\n  [!] Password must be at least 6 characters.\n");
+        pressEnter();
+        return 0;
+    }
+ 
+    printf("  Confirm new password   : ");
+    fgets(confirmPass, MAX_PASS, stdin);
+    confirmPass[strcspn(confirmPass, "\n")] = '\0';
+ 
+    if (strcmp(newPass, confirmPass) != 0) {
+        printf("\n  [!] Passwords do not match.\n");
+        pressEnter();
+        return 0;
+    }
+ 
+    strncpy(u->password, newPass, MAX_PASS-1);
+    saveUsers();
+    printf("\n  Password changed successfully!\n");
+    pressEnter();
+    return 1;
+}
