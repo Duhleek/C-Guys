@@ -1,5 +1,1 @@
-D001|director|pass123|director
-A001|admin_john|pass456|admin
-P001|patient_ali|pass789|patient
-DR001|dr_sarah|passabc|doctor
-N001|nurse_mary|passdef|nurse
+D001|director|pass123|director|0123456789|director@hms.com

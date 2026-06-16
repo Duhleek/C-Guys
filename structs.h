@@ -32,13 +32,15 @@
    ============================================================ */
 
 /* users.txt
-   userID|username|password|role
-   e.g. D001|director|pass123|director */
+   userID|username|password|role|phone|email
+   e.g. D001|director|pass123|director|0123456789|director@hms.com */
 struct user {
     char userID[10];
     char username[20];
     char password[20];
     char role[10];      /* "director", "admin", "doctor", "nurse", "patient" */
+    char phone[15];
+    char email[50];
 };
 
 /* patients.txt
@@ -56,8 +58,8 @@ struct patient {
 };
 
 /* staff.txt
-   staffID|name|gender|dob|phone|email|role|shift
-   e.g. DR001|Dr Sarah|F|05/05/1985|0198765432|sarah@hms.com|doctor|morning */
+   staffID|name|gender|dob|phone|email|role
+   e.g. DR001|Dr Sarah|F|05/05/1985|0198765432|sarah@hms.com|doctor */
 struct staff {
     char staffID[10];
     char name[50];
@@ -66,7 +68,6 @@ struct staff {
     char phone[15];
     char email[50];
     char role[10];      /* "director", "admin", "doctor", "nurse" */
-    char shift[10];     /* "morning", "evening", "night" */
 };
 
 /* appointments.txt
