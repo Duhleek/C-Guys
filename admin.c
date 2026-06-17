@@ -254,4 +254,51 @@ void deleteStaff(struct user users[], int *userCount,
     saveStaff(staffList, *staffCount);
 
     printf("Staff member '%s' deleted successfully.\n", targetID);
+
+}
+
+void adminMenu(struct user *loggedInUser) {
+    int choice;
+    
+    /* Arrays to hold data for the admin functions */
+    struct user users[MAX_USERS];
+    struct staff staffList[MAX_STAFF];
+    int userCount = 0;
+    int staffCount = 0;
+
+    /* TODO: You might want to load the existing users and staff from 
+       your .txt files into the arrays above right here! */
+
+    while (1) {
+        printf("\n=== Admin Dashboard ===\n");
+        printf("1. List Staff\n");
+        printf("2. Create Staff\n");
+        printf("3. Delete Staff\n");
+        printf("4. Logout\n");
+        printf("Enter your choice: ");
+        
+        if (scanf("%d", &choice) != 1) {
+            clearBuffer();
+            printf("Invalid input. Please enter a number.\n");
+            continue;
+        }
+        clearBuffer();
+
+        switch (choice) {
+            case 1:
+                listStaff(staffList, staffCount);
+                break;
+            case 2:
+                createStaff(users, &userCount, staffList, &staffCount);
+                break;
+            case 3:
+                deleteStaff(users, &userCount, staffList, &staffCount);
+                break;
+            case 4:
+                printf("Logging out... Goodbye, %s!\n", loggedInUser->username);
+                return; /* Returns to main.c, ending the admin session */
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
 }

@@ -15,6 +15,9 @@ void createStaff(struct user users[], int *userCount,
    both in-memory arrays and rewrite both .txt files */
 void deleteStaff(struct user users[], int *userCount,
                  struct staff staffList[], int *staffCount);
+
+/* Main entry point for the Admin role */
+void adminMenu(struct user *loggedInUser);
  
 #endif /* ADMIN_H */
  

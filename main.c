@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "login.h"
+#include "director.h"
+#include "admin.h"
 
 #define MAX_ATTEMPTS 3
 

@@ -1,1 +1,2 @@
 D001|director|pass123|director|0123456789|director@hms.com
+A001|Admin.sean|1234|admin|+601128319554|littlebird9163@hotmail.com
