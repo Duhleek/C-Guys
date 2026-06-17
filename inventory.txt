@@ -1,0 +1,1 @@
+INV001|parcetamol|medication|50|tablets|11/2042

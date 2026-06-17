@@ -4,6 +4,7 @@
 #include "login.h"
 #include "director.h"
 #include "admin.h"
+#include "nurse.h"
 
 #define MAX_ATTEMPTS 3
 
@@ -41,7 +42,7 @@ int main() {
             } else if (strcmp(loggedIn->role, "doctor") == 0) {
                 // doctorMenu(loggedIn);
             } else if (strcmp(loggedIn->role, "nurse") == 0) {
-                // nurseMenu(loggedIn);
+                 nurseMenu(loggedIn);
             } else if (strcmp(loggedIn->role, "patient") == 0) {
                 // patientMenu(loggedIn);
             } else {
